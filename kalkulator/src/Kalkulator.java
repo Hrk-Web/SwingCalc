@@ -1,4 +1,6 @@
-
+/* *****************
+ * Simple calculator using Swing
+ * ***************** */
 
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -14,31 +16,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class Kalkulator extends JFrame {
 	
-	//https://www.newthinktank.com/2012/03/java-video-tutorial-22/
-	//https://www.java.net/forum/topic/jdk/java-se/java-calculator-problem
-	//http://gobruen.com/progs/j/Calculator.java
-	
-	//https://www.cs.purdue.edu/homes/apm/listen/JListenDemos/Calculator.java
-	//http://javarevisited.blogspot.com/2011/08/enum-in-java-example-tutorial.html
-
-	// Heads first Java str 231
-	// 
-	// Nie dziala, ze jak nie ma decimal places, to nie ucina tego .0
-	// zrobic tak zeby setText(Integer.toString robilo inta bez .0
-	
-	// http://www.opentaps.org/docs/index.php/How_to_Use_Java_BigDecimal:_A_Tutorial  <== !!!!!!
-	// http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html
-	// http://stackoverflow.com/questions/153724/how-to-round-a-number-to-n-decimal-places-in-java
-
-	//ROUND_HALF_EVEN: 
-	//Round half even will round as normal. However, when the rounding digit is 5, 
-	//it will round down if the digit to the left of the 5 is even and up otherwise.
+	/*
+	 * When there is no decimal places during calculations, the .0 still 
+	 * appears, but it shoudn`t. Work it out. 
+	 */
 	
 	JButton but1, but2, but3, but4, but5, but6, but7, but8, but9, but0,
 			butPlus, butMinus, clearAll, butDivide, butMultiply, butEquals,
-			butPeriod;
+			butPeriod, butDeco1, butDeco2;
 
 	JTextField textResult;
 	ListenForButton lfButton;
@@ -63,10 +51,6 @@ public class Kalkulator extends JFrame {
 	}
 
 	public Kalkulator() {
-
-		// Create the frame, position it and handle closing it
-
-		System.out.println("Witam. Pozdrawiam.");
 		
 		this.setSize(250, 400);
 		this.setLocationRelativeTo(null);
@@ -75,67 +59,13 @@ public class Kalkulator extends JFrame {
 
 		JPanel thePanel = new JPanel();
 
-		// Create a Grid Layout with as many rows as needed
-		// and 3 columns. The last 2 parameters create a
-		// horizontal gap of 2 pixels and a vertical gap of
-		// 2 pixels.
-
-		// thePanel.setLayout(new GridLayout(0,3,2,2));
-
 		thePanel.setLayout(new GridBagLayout());
-
-		// You create a GridBagContraints object that defines
-		// defaults for your components
-
 		GridBagConstraints gridConstraints = new GridBagConstraints();
-
-		// Define the x position of the component
-
-		gridConstraints.gridx = 1;
-
-		// Define the y position of the component
-
-		gridConstraints.gridy = 1;
-
-		// Number of columns the component takes up
-
-		gridConstraints.gridwidth = 1;
-
-		// Number of rows the component takes up
-
-		gridConstraints.gridheight = 1;
-
-		// Gives the layout manager a hint on how to adjust
-		// component width (0 equals fixed)
-
-		gridConstraints.weightx = 10;
-
-		// Gives the layout manager a hint on how to adjust
-		// component height (0 equals fixed)
-
-		gridConstraints.weighty = 50;
-
-		// Defines padding top, left, bottom, right
-
-		gridConstraints.insets = new Insets(5, 5, 5, 5);
-
-		// Defines where to place components if they don't
-		// fill the space: CENTER, NORTH, SOUTH, EAST, WEST
-		// NORTHEAST, etc.
-
-		gridConstraints.anchor = GridBagConstraints.CENTER;
-
-		// How should the component be stretched to fill the
-		// space: NONE, HORIZONTAL, VERTICAL, BOTH
-
-		gridConstraints.fill = GridBagConstraints.BOTH;
 
 		textResult = new JTextField("0", 15);
 		textResult.setEditable(false); // user shouldn`t change it
-		
-		// Defines the font to use in the text field
 
-		Font font = new Font("Helvetica", Font.PLAIN, 18);
+		Font font = new Font("Times New Roman", Font.PLAIN, 18);
 		textResult.setFont(font);
 		
 		but1 = new JButton("1");
@@ -155,6 +85,11 @@ public class Kalkulator extends JFrame {
 		butMultiply = new JButton("*");
 		butEquals = new JButton("=");
 		butPeriod = new JButton(".");
+		butDeco1 = new JButton();
+		butDeco2 = new JButton();
+		
+		butDeco1.setEnabled(false);
+		butDeco2.setEnabled(false);
 
 		butEquals.addActionListener(new ActionListener() {
 
@@ -189,8 +124,16 @@ public class Kalkulator extends JFrame {
 		butMinus.addActionListener(lfButton);
 		butPeriod.addActionListener(lfButton);
 		
+		gridConstraints.insets = new Insets(5, 5, 5, 5);
+		gridConstraints.anchor = GridBagConstraints.CENTER;
+		gridConstraints.fill = GridBagConstraints.BOTH;	
 		
-		
+		gridConstraints.gridx = 1;
+		gridConstraints.gridy = 1;
+		gridConstraints.gridwidth = 1;
+		gridConstraints.gridheight = 1;
+		gridConstraints.weightx = 10;
+		gridConstraints.weighty = 50;
 		thePanel.add(clearAll, gridConstraints);
 		gridConstraints.gridwidth = 5;
 		gridConstraints.gridx = 5;
@@ -235,14 +178,20 @@ public class Kalkulator extends JFrame {
 		gridConstraints.gridy = 4;
 		gridConstraints.gridheight = 2;
 		thePanel.add(butEquals, gridConstraints);
-
+		gridConstraints.gridy = 1;
+		gridConstraints.gridheight = 3;
+		thePanel.add(butDeco1, gridConstraints);
+		gridConstraints.gridy = 6;
+		gridConstraints.gridheight = 1;
+		thePanel.add(butDeco2, gridConstraints);
+		
 		this.add(thePanel);
 
 		this.setVisible(true);
 		
 
 		
-	} // END OF Lesson29 CONSTRUCTOR
+	} // END OF CONSTRUCTOR
 	
 	
 	
@@ -250,7 +199,6 @@ public class Kalkulator extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			// TODO Auto-generated method stub
 			
 			if( event.getSource() == but1){
 				if( textResult.getText().equals("0") || bool == true && calcType!=null){
@@ -332,7 +280,6 @@ public class Kalkulator extends JFrame {
 			
 			if( event.getSource() == butMultiply){
 				curCompute = Double.parseDouble(textResult.getText());
-				//System.out.println("Multiply");
 				System.out.println(textResult.getText());
 				System.out.println(curCompute);
 				calcType = CalculationType.MULTIPLY;
@@ -341,7 +288,6 @@ public class Kalkulator extends JFrame {
 			
 			if( event.getSource() == butDivide){
 				curCompute = Double.parseDouble(textResult.getText());
-				//System.out.println("Divide");
 				System.out.println(textResult.getText());
 				System.out.println(curCompute);
 				calcType = CalculationType.DIVIDE;
@@ -350,7 +296,6 @@ public class Kalkulator extends JFrame {
 			
 			if( event.getSource() == butPlus){
 				curCompute = Double.parseDouble(textResult.getText());
-				//System.out.println("Addition");
 				System.out.println(textResult.getText());
 				System.out.println(curCompute);
 				calcType = CalculationType.PLUS;
@@ -359,7 +304,6 @@ public class Kalkulator extends JFrame {
 			
 			if( event.getSource() == butMinus){
 				curCompute = Double.parseDouble(textResult.getText());
-				//System.out.println("Subtraction");
 				System.out.println(textResult.getText());
 				System.out.println(curCompute);
 				calcType = CalculationType.MINUS;
@@ -378,7 +322,6 @@ public class Kalkulator extends JFrame {
 			
 			
 			if( event.getSource() == butEquals){
-				/// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				 switch (calcType) {
 		            case MULTIPLY:
 		                    System.out.println("Multiplying");
@@ -418,9 +361,6 @@ public class Kalkulator extends JFrame {
 					//textResult.setText(Integer.toString((int)curCompute));
 						//.setText( String.format( "Value of a: %.2f", a ) );
 					System.out.println("No decimal places");
-					//System.out.println(curCompute + " No decimal places " + (int)curCompute);
-			        //System.out.printf("Floating point number with 3 decimal digits: %.3f\n",1.21312939123);
-			        //System.out.printf("Floating point number with 8 decimal digits: %.0f\n",1.21312939123);
 					
 				} else {
 					temp = Double.toString(curCompute);
@@ -443,6 +383,9 @@ public class Kalkulator extends JFrame {
 			return bd1.multiply(bd2).doubleValue();
 		}
 		
+			//ROUND_HALF_EVEN: 
+			//Round half even will round as normal. However, when the rounding digit is 5, 
+			//it will round down if the digit to the left of the 5 is even and up otherwise.
 		private double divide(double double1, double double2) {
 			BigDecimal bd1 = new BigDecimal(Double.toString(double1));
 			BigDecimal bd2 = new BigDecimal(Double.toString(double2));
@@ -466,12 +409,11 @@ public class Kalkulator extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			// TODO Auto-generated method stub
 			double valueJText = Double.parseDouble(textResult.getText());
 			System.out.println("Listen for text: " + valueJText);
 		}
 		
 	}
 	
-} // END OF Lesson29 CLASS
+} // END OF CLASS
 
