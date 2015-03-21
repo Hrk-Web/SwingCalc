@@ -2,6 +2,7 @@
  * Simple calculator using Swing
  * ***************** */
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -35,6 +36,9 @@ public class Kalkulator extends JFrame {
 	double curCompute;
 	boolean bool = true, isMinus, isPlus, isMultiply, isDivide, isPeriod = false;
 	
+	JPanel thePanel;
+	GridBagConstraints gridConstraints;
+	
 	enum CalculationType {
 		MULTIPLY (1) , DIVIDE (2), PLUS (3), MINUS (4);
 			int val;
@@ -45,9 +49,7 @@ public class Kalkulator extends JFrame {
 	CalculationType calcType;
 
 	public static void main(String[] args) {
-
 		new Kalkulator();
-
 	}
 
 	public Kalkulator() {
@@ -57,53 +59,31 @@ public class Kalkulator extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Calculator");
 
-		JPanel thePanel = new JPanel();
-
+		thePanel = new JPanel();
 		thePanel.setLayout(new GridBagLayout());
-		GridBagConstraints gridConstraints = new GridBagConstraints();
+		gridConstraints = new GridBagConstraints();
 
 		textResult = new JTextField("0", 15);
 		textResult.setEditable(false); // user shouldn`t change it
-
 		Font font = new Font("Times New Roman", Font.PLAIN, 18);
 		textResult.setFont(font);
 		
-		but1 = new JButton("1");
-		but2 = new JButton("2");
-		but3 = new JButton("3");
-		but4 = new JButton("4");
-		but5 = new JButton("5");
-		but6 = new JButton("6");
-		but7 = new JButton("7");
-		but8 = new JButton("8");
-		but9 = new JButton("9");
-		butPlus = new JButton("+");
-		but0 = new JButton("0");
-		butMinus = new JButton("-");
-		clearAll = new JButton("C");
-		butDivide = new JButton("/");
-		butMultiply = new JButton("*");
-		butEquals = new JButton("=");
-		butPeriod = new JButton(".");
-		butDeco1 = new JButton();
-		butDeco2 = new JButton();
+		// Creates JButtons 
+		initCalcButtons(); 
 		
-		butDeco1.setEnabled(false);
-		butDeco2.setEnabled(false);
 
 		butEquals.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				textResult.setText(Double.toString(curCompute)); 
-				
 			}
-			
 		});		
 		
 		ListenForText lfText = new ListenForText();
-		ListenForButton lfButton = new ListenForButton();
 		
+		
+		
+		ListenForButton lfButton = new ListenForButton();
 		
 		but1.addActionListener(lfButton);
 		but2.addActionListener(lfButton);
@@ -124,6 +104,19 @@ public class Kalkulator extends JFrame {
 		butMinus.addActionListener(lfButton);
 		butPeriod.addActionListener(lfButton);
 		
+		// Sets grid and overall appearance of calculator
+		setCalcAppearance();	
+
+		this.add(thePanel);
+		this.setVisible(true);	
+
+	} // END OF CONSTRUCTOR
+	
+	
+	/*
+	 * Sets grid and overall appearance of calculator
+	 */
+	private void setCalcAppearance() {
 		gridConstraints.insets = new Insets(5, 5, 5, 5);
 		gridConstraints.anchor = GridBagConstraints.CENTER;
 		gridConstraints.fill = GridBagConstraints.BOTH;	
@@ -176,23 +169,64 @@ public class Kalkulator extends JFrame {
 		thePanel.add(butPeriod, gridConstraints);
 		gridConstraints.gridx = 13;
 		gridConstraints.gridy = 4;
-		gridConstraints.gridheight = 2;
+		gridConstraints.gridheight = 3;
 		thePanel.add(butEquals, gridConstraints);
 		gridConstraints.gridy = 1;
 		gridConstraints.gridheight = 3;
 		thePanel.add(butDeco1, gridConstraints);
-		gridConstraints.gridy = 6;
-		gridConstraints.gridheight = 1;
-		thePanel.add(butDeco2, gridConstraints);
-		
-		this.add(thePanel);
+	}
 
-		this.setVisible(true);
+	/*
+	 * Creates JButtons
+	 */
+	private void initCalcButtons() {
 		
+		but1 = new JButton("1");
+		but2 = new JButton("2");
+		but3 = new JButton("3");
+		but4 = new JButton("4");
+		but5 = new JButton("5");
+		but6 = new JButton("6");
+		but7 = new JButton("7");
+		but8 = new JButton("8");
+		but9 = new JButton("9");
+		but0 = new JButton("0");
+		
+		butPlus = new JButton("+"); 
+		setButtonMiscs(butPlus);
+		
+		butMinus = new JButton("-");
+		setButtonMiscs(butMinus);
+		
+		clearAll = new JButton("C");
+		setButtonMiscs(clearAll);
+		
+		butDivide = new JButton("/");
+		setButtonMiscs(butDivide);
+		
+		butMultiply = new JButton("*");
+		setButtonMiscs(butMultiply);
+		
+		butEquals = new JButton("=");
+		setButtonMiscs(butEquals);
+		
+		butPeriod = new JButton(".");
+		setButtonMiscs(butPeriod);
+		
+		butDeco1 = new JButton();
+		butDeco1.setEnabled(false);
+	}
 
+	/*
+	 * Changes color, fonts etc. of buttons
+	 */
+	private JButton setButtonMiscs(JButton b){
+		b.setForeground(Color.WHITE); 
+		b.setFont(new Font("Tahoma", Font.BOLD, 22));
+		b.setBackground(new Color(59, 89, 182));
 		
-	} // END OF CONSTRUCTOR
-	
+		return b;
+	}
 	
 	
 	private class ListenForButton implements ActionListener{
@@ -317,7 +351,6 @@ public class Kalkulator extends JFrame {
 				} else {System.out.println("Period jest juz obecny");}
 				
 				isPeriod = true;
-				
 			}			
 			
 			
@@ -412,7 +445,6 @@ public class Kalkulator extends JFrame {
 			double valueJText = Double.parseDouble(textResult.getText());
 			System.out.println("Listen for text: " + valueJText);
 		}
-		
 	}
 	
 } // END OF CLASS
