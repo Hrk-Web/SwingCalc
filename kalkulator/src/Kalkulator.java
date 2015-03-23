@@ -34,7 +34,13 @@ public class Kalkulator extends JFrame {
 	int num1, num2, computePick;  // computePick: 1=multiply, 2=divide, 3=plus, 4=minus
 	String int_curCompute, temp;
 	double curCompute;
-	boolean bool = true, isMinus, isPlus, isMultiply, isDivide, isPeriod = false;
+	// @param bool When true it clears the textfield and places a number
+	//             When false it adds a new number at the end of the line
+	boolean bool = true; 
+	// @param endOfEquation True when "=" is pressed, it clears the textfield and places a number
+	//                      False when no "=" was pressed, it adds a new number at the end of the line
+	boolean endOfEquation = true;
+	boolean isMinus, isPlus, isMultiply, isDivide, isPeriod = false;
 	
 	JPanel thePanel;
 	GridBagConstraints gridConstraints;
@@ -222,7 +228,7 @@ public class Kalkulator extends JFrame {
 	 */
 	private JButton setButtonMiscs(JButton b){
 		b.setForeground(Color.WHITE); 
-		b.setFont(new Font("Tahoma", Font.BOLD, 22));
+		b.setFont(new Font("Tahoma", Font.BOLD, 16));
 		b.setBackground(new Color(59, 89, 182));
 		
 		return b;
@@ -235,71 +241,81 @@ public class Kalkulator extends JFrame {
 		public void actionPerformed(ActionEvent event) {
 			
 			if( event.getSource() == but1){
-				if( textResult.getText().equals("0") || bool == true && calcType!=null){
+				if( textResult.getText().equals("0") || bool == true && (calcType!=null || endOfEquation == true) ){
 					textResult.setText("1");
-					 if (calcType!=null) bool = false; 
-				} else {textResult.replaceSelection("1");}
+					endOfEquation = false; // When true, it indicates that next number pressed will clear the textfield and place that numer
+					 if (calcType!=null) bool = false; // bool is true after "=", +*-/, to determin when to clear textfield when number is pressed 
+				} else {textResult.replaceSelection("1");} // Number "1" is placed at the end of the line
 			}
 			
 			if( event.getSource() == but2 ){
-				if( textResult.getText().equals("0") || bool == true && calcType!=null){
+				if( textResult.getText().equals("0") || bool == true && (calcType!=null || endOfEquation == true) ){
 					textResult.setText("2");
+					endOfEquation = false;
 					 if (calcType!=null) bool = false;
 				} else {textResult.replaceSelection("2");}
 			}
 			
 			if( event.getSource() == but3 ){
-				if( textResult.getText().equals("0") || bool == true && calcType!=null){
+				if( textResult.getText().equals("0") || bool == true && (calcType!=null || endOfEquation == true) ){
 					textResult.setText("3");
+					endOfEquation = false;
 					 if (calcType!=null) bool = false;
 				} else {textResult.replaceSelection("3");}
 			}
 			
 			if( event.getSource() == but4 ){
-				if( textResult.getText().equals("0") || bool == true && calcType!=null){
+				if( textResult.getText().equals("0") || bool == true && (calcType!=null || endOfEquation == true) ){
 					textResult.setText("4");
+					endOfEquation = false;
 					 if (calcType!=null) bool = false;
 				} else {textResult.replaceSelection("4");}
 			}
 			
 			if( event.getSource() == but5 ){
-				if( textResult.getText().equals("0") || bool == true && calcType!=null){
+				if( textResult.getText().equals("0") || bool == true && (calcType!=null || endOfEquation == true) ){
 					textResult.setText("5");
+					endOfEquation = false;
 					 if (calcType!=null) bool = false;
 				} else {textResult.replaceSelection("5");} 
 			}
 			
 			if( event.getSource() == but6 ){
-				if( textResult.getText().equals("0") || bool == true && calcType!=null){
+				if( textResult.getText().equals("0") || bool == true && (calcType!=null || endOfEquation == true) ){
 					textResult.setText("6");
+					endOfEquation = false;
 					 if (calcType!=null) bool = false;
 				} else {textResult.replaceSelection("6");}
 			}
 			
 			if( event.getSource() == but7 ){
-				if( textResult.getText().equals("0") || bool == true && calcType!=null){
+				if( textResult.getText().equals("0") || bool == true && (calcType!=null || endOfEquation == true) ){
 					textResult.setText("7");
+					endOfEquation = false;
 					 if (calcType!=null) bool = false;
 				} else {textResult.replaceSelection("7");}
 			}
 			
 			if( event.getSource() == but8 ){
-				if( textResult.getText().equals("0") || bool == true && calcType!=null){
+				if( textResult.getText().equals("0") || bool == true && (calcType!=null || endOfEquation == true) ){
 					textResult.setText("8");
+					endOfEquation = false;
 					 if (calcType!=null) bool = false;
 				} else {textResult.replaceSelection("8");}
 			}
 			
 			if( event.getSource() == but9 ){
-				if( textResult.getText().equals("0") || bool == true && calcType!=null){
+				if( textResult.getText().equals("0") || bool == true && (calcType!=null || endOfEquation == true) ){
 					textResult.setText("9");
+					endOfEquation = false;
 					 if (calcType!=null) bool = false;
 				} else {textResult.replaceSelection("9");}
 			}
 			
 			if( event.getSource() == but0 ){
-				if( textResult.getText().equals("0") || bool == true && calcType!=null){
+				if( textResult.getText().equals("0") || bool == true && (calcType!=null || endOfEquation == true) ){
 					textResult.setText("0");
+					endOfEquation = false;
 					 if (calcType!=null) bool = false;
 				} else {textResult.replaceSelection("0");}
 			}
@@ -310,6 +326,7 @@ public class Kalkulator extends JFrame {
 				isPeriod = false;
 				calcType = null;
 				bool = true; // ????
+				endOfEquation = true;
 			}
 			
 			if( event.getSource() == butMultiply){
@@ -318,6 +335,7 @@ public class Kalkulator extends JFrame {
 				System.out.println(curCompute);
 				calcType = CalculationType.MULTIPLY;
 				isPeriod = false;
+				bool = true;
 			}
 			
 			if( event.getSource() == butDivide){
@@ -326,6 +344,7 @@ public class Kalkulator extends JFrame {
 				System.out.println(curCompute);
 				calcType = CalculationType.DIVIDE;
 				isPeriod = false;
+				bool = true;
 			}
 			
 			if( event.getSource() == butPlus){
@@ -334,6 +353,7 @@ public class Kalkulator extends JFrame {
 				System.out.println(curCompute);
 				calcType = CalculationType.PLUS;
 				isPeriod = false;
+				bool = true;
 			}
 			
 			if( event.getSource() == butMinus){
@@ -342,37 +362,47 @@ public class Kalkulator extends JFrame {
 				System.out.println(curCompute);
 				calcType = CalculationType.MINUS;
 				isPeriod = false;
+				bool = true;
 			}
 			
 			if( event.getSource() == butPeriod){
-				if( isPeriod == false ){
+				if (isPeriod == false) {
 					textResult.replaceSelection(".");
 					System.out.println("Period");
-				} else {System.out.println("Period jest juz obecny");}
+				} else {
+					System.out.println("Period jest juz obecny");
+				}
 				
 				isPeriod = true;
 			}			
 			
 			
-			if( event.getSource() == butEquals){
-				 switch (calcType) {
-		            case MULTIPLY:
-		                    System.out.println("Multiplying");
-		                    curCompute = multiply(curCompute, Double.parseDouble(textResult.getText()));		                    
-		                    break;
-		            case DIVIDE:
-		                    System.out.println("Division");
-		                    curCompute = divide(curCompute, Double.parseDouble(textResult.getText()));
-		                    break;
-		            case PLUS:
-		                    System.out.println("Addition");
-		                    curCompute = addition(curCompute, Double.parseDouble(textResult.getText()));
-		                    break;
-		            case MINUS:
-		                    System.out.println("Subtraction");
-		                    curCompute = subtraction(curCompute, Double.parseDouble(textResult.getText()));
-		                    break;
-		    }
+			if(event.getSource() == butEquals){
+				
+				if (calcType != null){ // Error occured when "=" was pressed at the beginning of the program
+				
+					switch (calcType) {
+				case MULTIPLY:
+					System.out.println("Multiplying");
+					curCompute = multiply(curCompute,
+							Double.parseDouble(textResult.getText()));
+					break;
+				case DIVIDE:
+					System.out.println("Division");
+					curCompute = divide(curCompute,
+							Double.parseDouble(textResult.getText()));
+					break;
+				case PLUS:
+					System.out.println("Addition");
+					curCompute = addition(curCompute,
+							Double.parseDouble(textResult.getText()));
+					break;
+				case MINUS:
+					System.out.println("Subtraction");
+					curCompute = subtraction(curCompute,
+							Double.parseDouble(textResult.getText()));
+					break;
+				}
 				
 				if ( (curCompute % 1) == 0 ){ // Checks if value has decimal
 					
@@ -405,10 +435,12 @@ public class Kalkulator extends JFrame {
 				textResult.setText( temp );
 				bool = true;
 				isPeriod = false;
-				
+				endOfEquation = true; // When number is pressed, the result of previous equation is cleared
+									  // When +-*/ is pressed, the calculation proceeds 
+				} // End of "if (calcType != null)"
 			}
 			
-		}
+		} // End of action listener - button listener
 
 		private double multiply(double double1, double double2) {
 			BigDecimal bd1 = new BigDecimal(Double.toString(double1));
